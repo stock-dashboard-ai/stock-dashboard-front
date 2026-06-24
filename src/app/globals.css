@@ -1,0 +1,33 @@
+/* Tailwind CSS v4 - CSS-first configuration */
+/* In v4, use @import instead of @tailwind base/components/utilities */
+@import "tailwindcss";
+
+/* @theme block is used to customize design tokens in Tailwind v4 */
+@theme {
+  /* Custom color palette (extend as needed) */
+  --color-brand-50: oklch(0.97 0.01 240);
+  --color-brand-100: oklch(0.94 0.02 240);
+  --color-brand-500: oklch(0.55 0.15 240);
+  --color-brand-600: oklch(0.48 0.18 240);
+  --color-brand-700: oklch(0.41 0.18 240);
+  --color-brand-900: oklch(0.27 0.14 240);
+
+  /* Custom font */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-white);
+  color: var(--color-gray-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
