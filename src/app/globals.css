@@ -45,12 +45,16 @@ svg:focus-visible {
 }
 
 /* Hide scrollbar but keep scrolling functionality */
-.overflow-y-auto {
+.overflow-y-auto,
+.overflow-auto,
+#mainContents {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.overflow-y-auto::-webkit-scrollbar {
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-auto::-webkit-scrollbar,
+#mainContents::-webkit-scrollbar {
   display: none;
 }
 

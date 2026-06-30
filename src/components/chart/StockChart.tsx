@@ -1,15 +1,16 @@
 "use client";
 
-import { ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { ComposedChart, Line, Area, Bar, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { PriceData } from "@/types";
+import { useMemo } from "react";
 
 interface StockChartProps {
-  data: PriceData[];
+  data: PriceData;
 }
 
 const BarRender = (props: any) => {
-  const { fill, x, y, width, height, payload, index } = props;
-  const color = index % 2 === 0 ? "#ef4444" : "#21c55e"; // 빨간색, 초록색 교대로
+  const { x, y, width, height, index } = props;
+  const color = index % 2 === 0 ? "#ef4444" : "#21c55e";
   return (
     <g>
       <rect
@@ -25,13 +26,24 @@ const BarRender = (props: any) => {
 };
 
 export default function StockChart({ data }: StockChartProps) {
-  // 막대 그래프 높이를 price 값의 일정 비율로 설정
-  const priceMax = Math.max(...data.map(d => d.price));
-  const chartData = data.map((item, index) => ({
-    ...item,
-    volume: (item.price / priceMax) * priceMax * 0.15, // price에 비례하여 높이 설정
-    index,
-  }));
+  const chartData = useMemo(() => {
+    if (!data || !data.dates || data.dates.length === 0) {
+      return [];
+    }
+    // 막대 그래프 높이를 가격의 2-5% 정도로 스케일링
+    const maxPrice = Math.max(...(data.closes || [0]));
+    const volumeScale = maxPrice * 0.33;
+
+    return data.dates.map((date, index) => ({
+      date,
+      price: data.closes?.[index] || 0,
+      volume: (data.volumes?.[index] || 0) * volumeScale / Math.max(...(data.volumes || [1])),
+    }));
+  }, [data]);
+
+  if (!chartData || chartData.length === 0) {
+    return <div className="w-full h-full flex items-center justify-center text-[#6a7c9f]">데이터 로딩 중...</div>;
+  }
 
   return (
     <div className="w-full h-full" style={{ outline: "none" }}>
@@ -52,6 +64,13 @@ export default function StockChart({ data }: StockChartProps) {
             dataKey="date"
             stroke="#6a7c9f"
             style={{ fontSize: "12px" }}
+            tickFormatter={(date) => {
+              // 날짜 형식이 "YYYY-MM-DD" 또는 "MM/DD" 등 다양할 수 있으므로
+              if (typeof date === 'string') {
+                return date.replace(/\d{4}-/, '').replace(/\/\d{4}/, '');
+              }
+              return date;
+            }}
           />
           <Tooltip
             contentStyle={{

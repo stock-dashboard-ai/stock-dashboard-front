@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import type { ChatMessage } from "@/types";
+import type { ChatMessage, ChatResponse } from "@/types";
 import { CHAT_MESSAGES } from "@/constants/constants";
+import apiClient from "@/api/apiClient";
 import ChatHeader from "./ChatHeader";
 import MessageBubble from "./MessageBubble";
-import QuickButton from "./QuickButton";
 import ChatInput from "./ChatInput";
 import LoadingDots from "./LoadingDots";
 
@@ -13,16 +13,13 @@ interface AiChatBoxProps {
   stockName: string;
 }
 
-const QUICK_QUESTIONS = [
-  "최근 어닝 서프라이즈 있었나?",
-  "Blackwell 우유 전망은?",
-  "경정사 대비 마진 수준은?",
-];
+const generateSessionId = () => `session_${Date.now()}`;
 
 export default function AiChatBox({ stockName }: AiChatBoxProps) {
   const [messages, setMessages] = useState<ChatMessage[]>(CHAT_MESSAGES);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId] = useState(generateSessionId());
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -33,7 +30,7 @@ export default function AiChatBox({ stockName }: AiChatBoxProps) {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = (content: string = inputValue) => {
+  const handleSendMessage = async (content: string = inputValue) => {
     if (!content.trim()) return;
 
     const userMessage: ChatMessage = {
@@ -46,16 +43,36 @@ export default function AiChatBox({ stockName }: AiChatBoxProps) {
     setInputValue("");
     setIsLoading(true);
 
-    setTimeout(() => {
+    try {
+      const response = await apiClient<ChatResponse>('/chat', {
+        method: 'POST',
+        body: JSON.stringify({
+          ticker: stockName,
+          query: content,
+          session_id: sessionId,
+        }),
+      });
+
       const assistantMessage: ChatMessage = {
         message_id: messages.length + 2,
         user: "assistant",
-        content: `"${content}"에 대한 분석입니다.\nNVIDIA는 현재 강력한 AI 칩 수요로 인해 매출이 증가하고 있습니다.\n자세한 내용은 차트와 분석 데이터를 참고해주세요.`,
+        content: response.answer,
+        sources: response.sources,
+        chunks_used: response.chunks_used,
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      const errorMessage: ChatMessage = {
+        message_id: messages.length + 2,
+        user: "assistant",
+        content: "죄송합니다. 요청을 처리하는 중에 오류가 발생했습니다. 다시 시도해주세요.",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -63,10 +80,6 @@ export default function AiChatBox({ stockName }: AiChatBoxProps) {
       e.preventDefault();
       handleSendMessage();
     }
-  };
-
-  const handleQuickQuestion = (question: string) => {
-    handleSendMessage(question);
   };
 
   return (
@@ -78,23 +91,11 @@ export default function AiChatBox({ stockName }: AiChatBoxProps) {
         {messages.map((message) => (
           <MessageBubble
             key={message.message_id}
-            content={message.content}
-            isUser={message.user === "user"}
+            message={message}
           />
         ))}
         {isLoading && <LoadingDots />}
         <div ref={messagesEndRef} />
-      </div>
-
-      {/* Quick Questions */}
-      <div className="flex flex-wrap gap-[8px] mb-[16px]">
-        {QUICK_QUESTIONS.map((question, index) => (
-          <QuickButton
-            key={index}
-            label={question}
-            onClick={() => handleQuickQuestion(question)}
-          />
-        ))}
       </div>
 
       {/* Chat Input */}

@@ -1,3 +1,19 @@
+export interface NewFinanceData {
+    financeName: string;
+    priceData: {
+        "1M": PriceData;
+        "3M": PriceData;
+        "6M": PriceData;
+        "1Y": PriceData;
+    }
+    analist_rating: AnalistRating;
+    consensus_target?: ConsensusTarget;
+    earning_data?: EarningData;
+    financial_snapshot?: FinancialSnapshot;
+    news_section?: NewsSection;
+    mda_summary?: MDASummary;
+}
+
 export interface FinanceData {
     id: number;
     name: string;
@@ -19,25 +35,32 @@ export interface PriceChart {
 }
 
 export interface PriceData {
-    date: string;
-    price: number;
-    volume?: number;
+    dates: string[];
+    closes: number[];
+    volumes: number[];
 }
 
-export interface AnalRating {
+export interface AnalistRating {
+    strong_buy: number;
     buy: number;
     hold: number;
     sell: number;
+    strong_sell: number;
 }
 
-export interface EPSData {
-    quarter: string;
-    actual: number;
-    expected: number;
+export interface EPSEstimate {
+    period: string;
+    avg: number;
+    low: number;
+    high: number;
+    yearAgoEps: number;
+    numberOfAnalysts: number;
+    growth: number;
+    currency: string;
 }
 
 export interface EarningData {
-    eps: EPSData[];
+    estimates: EPSEstimate[];
 }
 
 export interface AnalystRating {
@@ -47,43 +70,61 @@ export interface AnalystRating {
 }
 
 export interface ConsensusTarget {
-    current_price: number;
-    target_price: number;
-    high_target: number;
-    low_target: number;
-    analyst_ratings: AnalystRating[];
-}
-
-export interface FinancialMetric {
-    label: string;
-    value: string;
+    current: number;
+    low: number;
+    mean: number;
+    high: number;
+    median: number;
 }
 
 export interface FinancialSnapshot {
-    metrics: FinancialMetric[];
+    eps: number;
+    name: string;
+    sector: string;
+    "52w_low": number;
+    revenue: number;
+    "52w_high": number;
+    pe_ratio: number;
+    forward_pe: number;
+    market_cap: number;
+    profit_margin: number;
+    dividend_yield: number;
 }
 
-export interface NewsItem {
+export interface NewsArticle {
     title: string;
+    publisher: string;
     date: string;
-    source: string;
-    sentiment?: "positive" | "neutral" | "negative";
+    url: string;
 }
 
 export interface NewsSection {
-    news: NewsItem[];
-}
-
-export interface MDASummaryItem {
-    description: string;
+    articles: NewsArticle[];
 }
 
 export interface MDASummary {
-    items: MDASummaryItem[];
+    filing_date: string;
+    preview: string;
+    full_text: string;
 }
 
 export interface ChatMessage {
     message_id: number;
     user: "user" | "assistant";
     content: string;
+    sources?: string[];
+    chunks_used?: number;
 }
+
+export interface ChatRequest {
+    ticker: string;
+    query: string;
+    session_id: string;
+}
+
+export interface ChatResponse {
+    answer: string;
+    sources: string[];
+    chunks_used: number;
+}
+
