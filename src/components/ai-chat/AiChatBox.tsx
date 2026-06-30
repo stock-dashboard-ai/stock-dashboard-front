@@ -82,11 +82,11 @@ export default function AiChatBox({ stockName }: AiChatBoxProps) {
   };
 
   return (
-    <div className="fixed z-10 bottom-[100px] right-[40px] w-[400px] h-[500px] bg-[#0e1f38] rounded-[12px] border border-[#1a3a6a] flex flex-col p-[20px]">
+    <div className="fixed z-10 bottom-[20px] right-[20px] sm:bottom-[40px] sm:right-[30px] md:bottom-[100px] md:right-[40px] w-[calc(100%-40px)] sm:w-[380px] md:w-[400px] h-[500px] max-h-[80vh] bg-[#0e1f38] rounded-[12px] border border-[#1a3a6a] flex flex-col p-[12px] sm:p-[16px] md:p-[20px]">
       <ChatHeader stockName={stockName} />
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto mb-[16px] pr-[8px]">
+      <div className="flex-1 overflow-y-auto mb-[12px] sm:mb-[14px] md:mb-[16px] pr-[4px] sm:pr-[6px] md:pr-[8px]">
         {messages.map((message) => (
           <MessageBubble
             key={message.message_id}

@@ -12,18 +12,17 @@ export default function StockGridBox({ newFinanceData, className, isLoading }: {
 
 
   return (
-    <div className={`w-full relative h-full p-[20px] bg-[#0d1f34] border border-[#111f3d] rounded-[12px] flex flex-col overflow-hidden ${className}`}>
+    <div className={`w-full relative h-full p-[12px] sm:p-[16px] md:p-[20px] bg-[#0d1f34] border border-[#111f3d] rounded-[12px] flex flex-col overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="mb-[20px] flex items-center gap-[8px]">
-        <h2 className="text-[18px] font-[600] text-[#ffffff] mb-[4px]">
+      <div className="mb-[12px] sm:mb-[16px] md:mb-[20px] flex flex-col sm:flex-row sm:items-center gap-[8px] sm:gap-[12px]">
+        <h2 className="text-[16px] sm:text-[17px] md:text-[18px] font-[600] text-[#ffffff]">
           {newFinanceData.financeName} Corp.
         </h2>
-        <p className="text-[12px] text-[#6a7c9f] px-[8px] py-[4px] bg-[#0f1f3c] rounded-[8px]">SemiConductors AI</p>
-      </div>
-
-      {/* Tab Section */}
-      <div className="absolute right-[20px] top-[20px]">
-        <StockChartTabs activePeriod={activePeriod} onPeriodChange={setActivePeriod} />
+        <p className="text-[11px] sm:text-[12px] text-[#6a7c9f] px-[8px] py-[4px] bg-[#0f1f3c] rounded-[6px] sm:rounded-[8px] whitespace-nowrap">SemiConductors AI</p>
+        {/* Tab Section - Mobile below header, Desktop right side */}
+        <div className="sm:ml-auto">
+          <StockChartTabs activePeriod={activePeriod} onPeriodChange={setActivePeriod} />
+        </div>
       </div>
 
       {/* Chart Section */}
