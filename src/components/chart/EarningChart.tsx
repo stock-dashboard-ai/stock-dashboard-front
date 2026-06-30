@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart, Bar, XAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from "recharts";
+import { BarChart, Bar, XAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { EPSEstimate } from "@/types";
 import { useMemo } from "react";
 
