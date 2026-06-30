@@ -21,7 +21,7 @@ export interface FinanceData {
     plusOrMinus: "+" | "-";
     ratio: number;
     price_chart: PriceChart[];
-    anal_rating: AnalRating;
+    anal_rating: AnalistRating;
     earning_data?: EarningData;
     consensus_target?: ConsensusTarget;
     financial_snapshot?: FinancialSnapshot;

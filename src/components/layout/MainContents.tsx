@@ -1,4 +1,4 @@
-import { FinanceData, NewFinanceData } from "@/types";
+import { NewFinanceData } from "@/types";
 import StockGridBox from "../card/StockGridBox";
 import AnalysisRating from "../analysis/AnalysisRating";
 import EarningEPS from "../card/EarningEPS";
