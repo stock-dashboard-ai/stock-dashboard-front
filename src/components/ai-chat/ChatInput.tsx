@@ -15,7 +15,7 @@ export default function ChatInput({
   onSubmit,
   onKeyPress,
   isLoading,
-  placeholder = "NVDA 관련 질문을 입력하세요...",
+  placeholder = "질문을 입력하세요...",
 }: ChatInputProps) {
   return (
     <div className="flex gap-[6px] sm:gap-[8px]">
