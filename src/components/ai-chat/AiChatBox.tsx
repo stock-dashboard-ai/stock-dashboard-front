@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import type { ChatMessage, ChatResponse } from "@/types";
-import { CHAT_MESSAGES } from "@/constants/constants";
 import apiClient from "@/api/apiClient";
 import ChatHeader from "./ChatHeader";
 import MessageBubble from "./MessageBubble";
@@ -16,7 +15,7 @@ interface AiChatBoxProps {
 const generateSessionId = () => `session_${Date.now()}`;
 
 export default function AiChatBox({ stockName }: AiChatBoxProps) {
-  const [messages, setMessages] = useState<ChatMessage[]>(CHAT_MESSAGES);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId] = useState(generateSessionId());

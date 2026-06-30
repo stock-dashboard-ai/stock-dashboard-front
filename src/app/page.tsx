@@ -32,7 +32,6 @@ const filterDataByDays = (data: PriceData, days: number): PriceData => {
 };
 
 export default function HomePage() {
-  const [financeData, setFinanceData] = useState<FinanceData[]>(FINANCE_DATA)
   const [isLoading, setIsLoading] = useState(false)
 
   const [newFinanceData, setNewFinanceData] = useState<NewFinanceData>({
@@ -126,7 +125,7 @@ export default function HomePage() {
   return (
     <div className="w-full h-screen flex flex-col bg-[#0a1628]">
       <MainHeader financeData={newFinanceData} changeFinanceData={setNewFinanceData} />
-      <MainContents financeData={financeData} newFinanceData={newFinanceData} isLoading={isLoading} />
+      <MainContents newFinanceData={newFinanceData} isLoading={isLoading} />
     </div>
   )
 }
