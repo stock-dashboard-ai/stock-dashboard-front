@@ -31,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className="flex">{children}</body>
+    <html lang="en" className="w-full h-full" suppressHydrationWarning>
+      <body className="w-full h-full overflow-x-hidden">{children}</body>
     </html>
   )
 }

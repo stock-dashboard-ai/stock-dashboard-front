@@ -15,6 +15,9 @@
   /* Custom font */
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Breakpoints */
+  --breakpoint-lg: 1380px;
 }
 
 /* Base styles */
@@ -25,9 +28,29 @@
 }
 
 body {
-  background-color: var(--color-white);
+  background-color: #07111f;
   color: var(--color-gray-900);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Remove recharts SVG outline */
+svg:focus {
+  outline: none;
+}
+
+svg:focus-visible {
+  outline: none;
+}
+
+/* Hide scrollbar but keep scrolling functionality */
+.overflow-y-auto {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  display: none;
+}
+
