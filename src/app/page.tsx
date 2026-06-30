@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import MainHeader from "@/components/layout/MainHeader";
 import MainContents from "@/components/layout/MainContents";
-import { FINANCE_DATA } from "@/constants/constants";
-import { AnalistRating, ConsensusTarget, EarningData, FinanceData, FinancialSnapshot, MDASummary, NewFinanceData, NewsSection, PriceData } from "@/types";
+import { AnalistRating, ConsensusTarget, EarningData, FinancialSnapshot, MDASummary, NewFinanceData, NewsSection, PriceData } from "@/types";
 import apiClient from "@/api/apiClient";
 
 const filterDataByDays = (data: PriceData, days: number): PriceData => {
